@@ -30,19 +30,23 @@ lgreen = Fore.LIGHTGREEN_EX
 cyan = Fore.CYAN
 
 help_message = f"""
-   {lred}     ╔══════════════════════════════════╗                 _____ ___ _      _____ _           _                      
+{lred}     ╔══════════════════════════════════╗                 _____ ___ _      _____ _           _                      
 {lyellow}     ║   ► Commands:                    ║                |  ___|_ _| | ___|  ___(_)_ __   __| | ___ _ __ 
-   {lred}     ║                                  ║                | |_   | || |/ _ \ |_  | | '_ \ / _` |/ _ \ '__|
+{lred}     ║                                  ║                | |_   | || |/ _ \ |_  | | '_ \ / _` |/ _ \ '__|
 {lyellow}     ║   • filefinder                   ║                |  _|  | || |  __/  _| | | | | | (_| |  __/ |  
-   {lred}     ║   • choosepath                   ║                |_|   |___|_|\___|_|   |_|_| |_|\__,_|\___|_|
+{lred}     ║   • choosepath                   ║                |_|   |___|_|\___|_|   |_|_| |_|\__,_|\___|_|
 {lyellow}     ║   •                              ║
-   {lred}     ║   • cls                          ║
+{lred}     ║   • cls                          ║
 {lyellow}     ║                                  ║
-   {lred}     ╚══════════════════════════════════╝"""
+{lred}     ╚══════════════════════════════════╝"""
 
 
 
-
+def checkVersion():
+    r = requests.get('https://raw.githubusercontent.com/wrrulos/MCPTool/main/settings/settings.json')  # Get the latest version
+    last_version = r.text
+    js_version = json.loads(last_version)
+    last_version = js_version['version']
                                    
 
 ### Zapisywać do pliku za każdym odczytem //DONE
@@ -130,6 +134,7 @@ def commandListening():
 
 
 if __name__ == "__main__":
+    checkVersion()
     os.system("clear || cls & title FileFinder")
     print(help_message)
     while True:
