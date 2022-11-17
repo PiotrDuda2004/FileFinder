@@ -11,6 +11,8 @@ import time
 import json
 import requests
 import socket 
+import datetime
+
 
 init(strip=False)
 os.system("cls || clear")
@@ -132,18 +134,21 @@ def getOwner(FILENAME):
     return _owner_sid_cache[str(owner_sid)]
 
 def getFiles():
-    
+    listOfIterationTimes = []
     listOfFiles = []
     
     open("output.txt", "w").close()
     with open("output.txt","r+") as f:
         f.truncate(0)
-        f.write("Nazwa Pliku; "+"Data Modyfikacji; "+"Rozmiar; "+"Wlasciciel pliku; ")
+        f.write("Nazwa Pliku; "+"Rozmiar; "+"Data Modyfikacji; "+"Wlasciciel pliku; ")
         f.write('\n')
     pb = ProgressBar(total=sum([len(files) for r, d, files in os.walk(path)]),prefix='', suffix='', decimals=3, length=50, fill='█', zfill='░')
     for root, dirs, files in os.walk(path):
-        start = time.time()
+        
+
         for file in files:
+            start = time.time()
+
             listOfFiles.append(os.path.join(root,file))
             
             
@@ -159,8 +164,18 @@ def getFiles():
                     
                     f.write(str(name)+";  "+str(file_size)+";  "+str(file_date)+";  ")
                     pb.print_progress_bar(sum(1 for _ in open('output.txt')))
-                    
+                    stop = time.time()
+                    difference = stop-start
+                    listOfIterationTimes.append(difference)
 
+                    
+                   
+                    
+                    averageTime = sum(listOfIterationTimes)/len(listOfIterationTimes)
+                    
+                    howManyLeft = sum([len(files) for r, d, files in os.walk(path)])-sum(1 for _ in open('output.txt'))
+                   
+                    print(str(datetime.timedelta(seconds=(howManyLeft*averageTime)*100)))
                     #print("Est. time: "+str((duration/sum(1 for _ in open('output.txt')))*(sum([len(files) for r, d, files in os.walk(path)]))-sum(1 for _ in open('output.txt'))))
                     ## ZLOTO sum([len(files) for r, d, files in os.walk(path)])
                     try:
