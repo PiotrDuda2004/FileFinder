@@ -166,6 +166,7 @@ def getFiles():
                     pb.print_progress_bar(sum(1 for _ in open('output.txt')))
                     stop = time.time()
                     difference = stop-start
+
                     listOfIterationTimes.append(difference)
 
                     
