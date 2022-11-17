@@ -33,15 +33,15 @@ lgreen = Fore.LIGHTGREEN_EX
 cyan = Fore.CYAN
 
 help_message = f"""
-{lred}     ╔══════════════════════════════════╗                 _____ ___ _      _____ _           _                      
-{lyellow}     ║   ► Commands:                    ║                |  ___|_ _| | ___|  ___(_)_ __   __| | ___ _ __ 
-{lred}     ║                                  ║                | |_   | || |/ _ \ |_  | | '_ \ / _` |/ _ \ '__|
-{lyellow}     ║   • filefinder                   ║                |  _|  | || |  __/  _| | | | | | (_| |  __/ |  
-{lred}     ║   • choosepath                   ║                |_|   |___|_|\___|_|   |_|_| |_|\__,_|\___|_|
-{lyellow}     ║   •                              ║
-{lred}     ║   • cls                          ║
-{lyellow}     ║                                  ║
-{lred}     ╚══════════════════════════════════╝"""
+{lgreen}     ╔══════════════════════════════════╗                 _____ ___ _      _____ _           _                      
+{lgreen}     ║   ► Commands:                    ║                |  ___|_ _| | ___|  ___(_)_ __   __| | ___ _ __ 
+{lgreen}     ║                                  ║                | |_   | || |/ _ \ |_  | | '_ \ / _` |/ _ \ '__|
+{lgreen}     ║   • filefinder                   ║                |  _|  | || |  __/  _| | | | | | (_| |  __/ |  
+{lgreen}     ║   • choosepath                   ║                |_|   |___|_|\___|_|   |_|_| |_|\__,_|\___|_|
+{lgreen}     ║   •                              ║
+{lgreen}     ║   • cls                          ║
+{lgreen}     ║                                  ║
+{lgreen}     ╚══════════════════════════════════╝"""
 
 logo = f"""
 
@@ -102,7 +102,7 @@ def checkVersion():
     else:
         last_version = current_version
 
-    if float(last_version) != float(current_version):
+    if float(last_version) == float(current_version):
         return True
 
     return False         
@@ -202,21 +202,23 @@ if __name__ == "__main__":
     print(".\n")
     
     if(getJs("version_check")==True):
-        
-        checkVersion()
-        print("                                                Got it!  v"+str(getJs("version")))
-        time.sleep(2)
-        os.system("clear || cls & title FileFinder")
-        
+        if(checkVersion() == True):
+            print("                                                Got it!  v"+str(getJs("version")))
+            time.sleep(2)
+            os.system("clear || cls & title FileFinder")
+        else:
+            print("                 Couldn't load the latest version")
+            time.sleep(2)
+            os.system("clear || cls & title FileFinder")
     else:
         
-        print("                 Couldn't load latest version")
+        print("                 Couldn't load the latest version")
         time.sleep(2)
         os.system("clear || cls & title FileFinder")
     print(help_message)
     while True:
         if os.name == "nt":
             py = "python"
-            print(f"\n    {reset}{lred} root@windows:~/FileFinder# » ", end="")
+            print(f"\n    {reset}{lgreen} root@windows:~/FileFinder# » ", end="")
             commandListening() 
                 
