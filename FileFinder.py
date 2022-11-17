@@ -8,6 +8,9 @@ from pathlib import Path
 import win32security
 from console_progressbar import ProgressBar
 import time
+import json
+import requests
+import socket 
 
 init(strip=False)
 os.system("cls || clear")
@@ -40,14 +43,69 @@ help_message = f"""
 {lyellow}     ║                                  ║
 {lred}     ╚══════════════════════════════════╝"""
 
+logo = f"""
 
+
+{lyellow}                                                                ...vvvv)))))).
+{lyellow}                                       /~~\               ,,,c(((((((((((((((((/
+{yellow}                                      /~~c \.         .vv)))))))))))))))))))\``
+{yellow}                                           G_G__   ,,(((KKKK//////////////'
+{lyellow}                                        ,Z~__ '@,gW@@AKXX~MW,gmmmz==m_.
+{lyellow}                                       iP,dW@!,A@@@@@@@@@@@@@@@A` ,W@@A\c
+{yellow}                                        ]b_.__zf !P~@@@@@*P~b.~+=m@@@*~ g@Ws.
+{yellow}                                           ~`    ,2W2m. '\[ ['~~c'M7 _gW@@A`'s
+{lyellow}                                            v=XX)====Y-  [ [    \c/*@@@*~ g@@i
+{lyellow}                                           /v~           !.!.     '\c7+sg@@@@@s.
+{yellow}                                           //              'c'c       '\c7*X7~~~~
+{yellow}                                          ]/                 ~=Xm_       '~=(Gm_.'
+{lyellow}                         
+                         
+                         
+                         """
+def check_connection():
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(4)
+
+    try:
+        s.connect(('www.google.com', 80))
+        s.close()
+
+        return True
+
+    except (socket.gaierror, socket.timeout):
+
+        return False
+
+def getJs(temp):
+    try:
+        with open('settings.json') as f:
+            current_js = json.load(f)
+            current_js = current_js[temp]
+        return(current_js)
+    except:
+        print("                                          No settings.json file found! Get it from github")
+        time.sleep(2)
 
 def checkVersion():
-    r = requests.get('https://raw.githubusercontent.com/wrrulos/MCPTool/main/settings/settings.json')  # Get the latest version
-    last_version = r.text
-    js_version = json.loads(last_version)
-    last_version = js_version['version']
-                                   
+    connection = check_connection()       
+    if connection:
+        r = requests.get('https://raw.githubusercontent.com/PiotrDuda2004/FileFinder/main/settings.json')  # Get the latest version
+        last_version = r.text
+        js_version = json.loads(last_version)
+        last_version = js_version['version']
+
+     
+
+        current_version = getJs("version")
+
+    else:
+        last_version = current_version
+
+    if float(last_version) != float(current_version):
+        return True
+
+    return False         
 
 ### Zapisywać do pliku za każdym odczytem //DONE
 ### Pierwsza linia tekstu = nagłówek [sciezka ] [data] [rozmiar] [ JAK SIE UDA WLASCICIEL ] //DONE
@@ -134,8 +192,27 @@ def commandListening():
 
 
 if __name__ == "__main__":
-    checkVersion()
-    os.system("clear || cls & title FileFinder")
+    print(logo)
+    print("                                          Getting the last update",end = '', flush=True)
+    time.sleep(0.5)
+    print(".",end = '', flush=True)
+    time.sleep(0.5)
+    print(".",end = '', flush=True)
+    time.sleep(0.5)
+    print(".\n")
+    
+    if(getJs("version_check")==True):
+        
+        checkVersion()
+        print("                                                Got it!  v"+str(getJs("version")))
+        time.sleep(2)
+        os.system("clear || cls & title FileFinder")
+        
+    else:
+        
+        print("                 Couldn't load latest version")
+        time.sleep(2)
+        os.system("clear || cls & title FileFinder")
     print(help_message)
     while True:
         if os.name == "nt":
